@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Walk In Prepared. Walk Out With Answers. | Health with Hashimoto's</title>
+<meta name="description" content="A quick quiz to help you figure out which questions actually matter right now, so your next appointment gets you real answers instead of more waiting.">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif:wght@400;600;700&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+
+<style>
+  :root {
+    /* Anchor colors */
+    --prussian: #0C243C;
+    --grape: #4C354B;
+
+    /* Pillar colors */
+    --salmon: #E48779;
+    --clay: #E0AF6A;
+    --mauve: #6F4969;
+    --sage: #829F67;
+    --denim: #6B87A6;
+
+    /* Backgrounds */
+    --neutral: #FBF8F4;
+    --lavender: #E7DAE5;
+    --antique: #F8EDDD;
+    --seashell: #FCF0EE;
+
+    --text: var(--prussian);
+    --radius: 16px;
+  }
+
+  * { box-sizing: border-box; }
+
+  html, body {
+    margin: 0;
+    padding: 0;
+  }
+
+  body {
+    font-family: 'Roboto', sans-serif;
+    background-color: var(--neutral);
+    color: var(--text);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px 16px;
+    line-height: 1.55;
+  }
+
+  h1, h2, h3 {
+    font-family: 'Noto Serif', serif;
+    font-weight: 600;
+    line-height: 1.25;
+    margin: 0 0 12px 0;
+  }
+
+  .wrap {
+    width: 100%;
+    max-width: 600px;
+  }
+
+  .card {
+    background-color: #FFFFFF;
+    border-radius: 24px;
+    padding: clamp(28px, 6vw, 48px);
+    box-shadow: 0 10px 30px rgba(12, 36, 60, 0.08);
+  }
+
+  .screen { display: none; }
+  .screen.active { display: block; }
+
+  /* --- Flower mark (echoes the Health with Hashimoto's logo) --- */
+  .mark {
+    display: block;
+    margin: 0 auto 20px auto;
+  }
+
+  /* --- Start screen --- */
+  .eyebrow {
+    font-family: 'Roboto', sans-serif;
+    font-weight: 500;
+    font-size: 13px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--grape);
+    text-align: center;
+    margin-bottom: 10px;
+  }
+
+  .start-title {
+    text-align: center;
+    font-size: clamp(26px, 5vw, 34px);
+    color: var(--prussian);
+  }
+
+  .start-sub {
+    text-align: center;
+    font-size: 16px;
+    color: var(--grape);
+    max-width: 440px;
+    margin: 0 auto 28px auto;
+  }
+
+  .meta-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    font-size: 13px;
+    color: var(--grape);
+    margin-bottom: 28px;
+  }
+
+  .meta-dot {
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background-color: var(--grape);
+    opacity: 0.5;
+  }
+
+  /* --- Buttons --- */
+  .btn {
+    display: block;
+    width: 100%;
+    text-align: center;
+    font-family: 'Roboto', sans-serif;
+    font-weight: 700;
+    font-size: 16px;
+    padding: 16px 24px;
+    border-radius: 999px;
+    border: none;
+    cursor: pointer;
+    text-decoration: none;
+    transition: transform 0.15s ease, box-shadow 0.15s ease, background-color 0.15s ease;
+  }
+
+  .btn-primary {
+    background-color: var(--salmon);
+    color: #FFFFFF;
+  }
+
+  .btn-primary:hover {
+    background-color: #d97363;
+    transform: translateY(-1px);
+    box-shadow: 0 6px 16px rgba(228, 135, 121, 0.35);
+  }
+
+  .btn-primary:focus-visible,
+  .option:focus-visible,
+  .btn-text:focus-visible {
+    outline: 3px solid var(--denim);
+    outline-offset: 2px;
+  }
+
+  .btn-text {
+    display: inline-block;
+    background: none;
+    border: none;
+    color: var(--grape);
+    font-family: 'Roboto', sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    text-decoration: underline;
+    padding: 4px;
+  }
+
+  /* --- Quiz screen --- */
+  .progress-labels {
+    display: flex;
+    justify-content: space-between;
+    font-size: 13px;
+    color: var(--grape);
+    margin-bottom: 8px;
+  }
+
+  .progress-track {
+    width: 100%;
+    height: 6px;
+    background-color: var(--lavender);
+    border-radius: 999px;
+    overflow: hidden;
+    margin-bottom: 28px;
+  }
+
+  .progress-fill {
+    height: 100%;
+    background-color: var(--salmon);
+    border-radius: 999px;
+    transition: width 0.35s ease;
+    width: 0%;
+  }
+
+  .question-text {
+    font-size: clamp(20px, 4.5vw, 24px);
+    color: var(--prussian);
+    margin-bottom: 22px;
+  }
+
+  .options {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    list-style: none;
+    margin: 0 0 8px 0;
+    padding: 0;
+  }
+
+  .option {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    width: 100%;
+    text-align: left;
+    font-family: 'Roboto', sans-serif;
+    font-size: 15.5px;
+    color: var(--prussian);
+    background-color: var(--antique);
+    border: 2px solid transparent;
+    border-radius: 14px;
+    padding: 14px 16px;
+    cursor: pointer;
+    transition: border-color 0.15s ease, background-color 0.15s ease;
+  }
+
+  .option:hover {
+    border-color: var(--salmon);
+  }
+
+  .option.selected {
+    border-color: var(--salmon);
+    background-color: var(--seashell);
+  }
+
+  .option-dot {
+    flex: 0 0 auto;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background-color: var(--denim);
+  }
+
+  .back-row {
+    text-align: center;
+    margin-top: 8px;
+  }
+
+  /* --- Result screen --- */
+  .result-eyebrow {
+    text-align: center;
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--grape);
+    margin-bottom: 10px;
+  }
+
+  .result-title {
+    text-align: center;
+    font-size: clamp(24px, 5vw, 30px);
+    color: var(--prussian);
+    margin-bottom: 18px;
+  }
+
+  .result-body {
+    font-size: 16px;
+    color: var(--text);
+    margin-bottom: 28px;
+  }
+
+  .result-body p {
+    margin: 0 0 14px 0;
+  }
+
+  .footer-link {
+    display: block;
+    text-align: center;
+    margin-top: 20px;
+    font-size: 13px;
+    color: var(--grape);
+  }
+
+  .footer-link a {
+    color: var(--grape);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    * {
+      transition: none !important;
+    }
+  }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <div class="card">
+
+    <!-- START SCREEN -->
+    <section id="screen-start" class="screen active">
+      <svg class="mark" width="64" height="64" viewBox="0 0 64 64" aria-hidden="true">
+        <circle cx="32" cy="16" r="13" fill="#E48779"/>
+        <circle cx="48" cy="26" r="13" fill="#4C354B"/>
+        <circle cx="42" cy="45" r="13" fill="#6B87A6"/>
+        <circle cx="22" cy="45" r="13" fill="#829F67"/>
+        <circle cx="16" cy="26" r="13" fill="#E0AF6A"/>
+        <circle cx="32" cy="32" r="11" fill="#FFFFFF"/>
+      </svg>
+
+      <div class="eyebrow">Health with Hashimoto's</div>
+      <h1 class="start-title">Walk In Prepared.<br>Walk Out With Answers.</h1>
+      <p class="start-sub">A quick quiz to help you figure out which questions actually matter right now, so your next appointment gets you real answers instead of more waiting.</p>
+
+      <div class="meta-row">
+        <span>6 questions</span>
+        <span class="meta-dot"></span>
+        <span>Takes about 2 minutes</span>
+      </div>
+
+      <button class="btn btn-primary" id="start-btn">Start the quiz</button>
+    </section>
+
+    <!-- QUIZ SCREEN -->
+    <section id="screen-quiz" class="screen">
+      <div class="progress-labels">
+        <span id="question-count">Question 1 of 6</span>
+      </div>
+      <div class="progress-track">
+        <div class="progress-fill" id="progress-fill"></div>
+      </div>
+
+      <h2 class="question-text" id="question-text"></h2>
+      <ul class="options" id="options-list"></ul>
+
+      <div class="back-row">
+        <button class="btn-text" id="back-btn">Back</button>
+      </div>
+    </section>
+
+    <!-- RESULT SCREEN -->
+    <section id="screen-result" class="screen">
+      <svg class="mark" width="56" height="56" viewBox="0 0 64 64" aria-hidden="true">
+        <circle cx="32" cy="16" r="13" fill="#E48779"/>
+        <circle cx="48" cy="26" r="13" fill="#4C354B"/>
+        <circle cx="42" cy="45" r="13" fill="#6B87A6"/>
+        <circle cx="22" cy="45" r="13" fill="#829F67"/>
+        <circle cx="16" cy="26" r="13" fill="#E0AF6A"/>
+        <circle cx="32" cy="32" r="11" fill="#FFFFFF"/>
+      </svg>
+
+      <div class="result-eyebrow">Your result</div>
+      <h2 class="result-title" id="result-title"></h2>
+      <div class="result-body" id="result-body"></div>
+
+      <a class="btn btn-primary" id="result-cta" href="#" target="_blank" rel="noopener">Get Hashimoto's Decoded for $27</a>
+
+      <div class="footer-link">
+        <button class="btn-text" id="restart-btn">Retake the quiz</button>
+      </div>
+    </section>
+
+  </div>
+
+  <div class="footer-link">
+    <a href="https://healthwithhashimotos.com/" target="_blank" rel="noopener">More free resources at healthwithhashimotos.com</a>
+  </div>
+</div>
+
+<script>
+  const questions = [
+    {
+      text: "When you go to your doctor's appointments, what usually happens?",
+      options: [
+        { text: "I don't really know what to ask", cat: "A" },
+        { text: "I ask, but the answers don't match how I feel", cat: "C" },
+        { text: "I get put on something, but nothing's really changed", cat: "B" },
+        { text: "I have so many questions saved up, I run out of time", cat: "D" },
+        { text: "I bring up something new that's shifted lately", cat: "E" }
+      ]
+    },
+    {
+      text: "When did you find out you had a thyroid or Hashimoto's issue?",
+      options: [
+        { text: "Very recently, still figuring out what it even means", cat: "A" },
+        { text: "A few months ago", cat: "E" },
+        { text: "Over a year ago", cat: "B" },
+        { text: "Honestly, I'm not sure I ever got a clear answer", cat: "C" },
+        { text: "Long enough that I've already tried several different approaches", cat: "D" }
+      ]
+    },
+    {
+      text: "Are you currently on thyroid medication?",
+      options: [
+        { text: "Not yet", cat: "A" },
+        { text: "Yes, and it's helped", cat: "E" },
+        { text: "Yes, but I still don't feel like myself", cat: "B" },
+        { text: "I was told my labs don't require it", cat: "C" },
+        { text: "Yes, but I'm also juggling supplements and other things I've read about", cat: "D" }
+      ]
+    },
+    {
+      text: "Has a doctor ever told you your labs look normal, even though you didn't feel normal?",
+      options: [
+        { text: "Yes, more than once", cat: "C" },
+        { text: "No, my labs have shown a problem", cat: "B" },
+        { text: "I haven't had labs checked recently", cat: "A" },
+        { text: "Yes, but that was before something recently changed", cat: "E" },
+        { text: "I've asked so many times, I've lost track of the answer", cat: "D" }
+      ]
+    },
+    {
+      text: "How would you describe your research pile right now?",
+      options: [
+        { text: "I haven't really started looking into this yet", cat: "A" },
+        { text: "I've read a little, here and there", cat: "E" },
+        { text: "I have a folder of saved posts I haven't gone back to", cat: "D" },
+        { text: "I've researched mainly around my medication, trying to figure out why it's not working", cat: "B" },
+        { text: "I've researched mostly trying to explain why I still feel bad despite \"normal\" results", cat: "C" }
+      ]
+    },
+    {
+      text: "Which sounds most like you right now?",
+      options: [
+        { text: "Nothing has really changed lately, I'm just tired of feeling this way", cat: "B" },
+        { text: "Something feels different than it did a few months ago", cat: "E" },
+        { text: "I don't know what's changed, I just know something has", cat: "C" },
+        { text: "I feel about the same as I did on diagnosis day", cat: "A" },
+        { text: "I keep starting new things before I finish figuring out the last one", cat: "D" }
+      ]
+    }
+  ];
+
+  const results = {
+    A: {
+      title: "You Don't Know Where to Start",
+      body: [
+        "You have a diagnosis, but nobody sat down and explained what it actually means for you. That's not your fault.",
+        "Most people leave that first appointment with a prescription and a lot of unanswered questions."
+      ]
+    },
+    B: {
+      title: "You're Medicated, But Still Not Yourself",
+      body: [
+        "You're doing what you were told. You're taking your medication, and you still don't feel like you.",
+        "That gap is real, and it usually means there's more going on than the prescription alone can fix."
+      ]
+    },
+    C: {
+      title: "Told You're Fine, But You Know You're Not",
+      body: [
+        "Your labs came back normal. Your body never got the memo.",
+        "You are not imagining this, and you are not being difficult. You are asking a reasonable question about your own body."
+      ]
+    },
+    D: {
+      title: "You Have More Questions Than Time",
+      body: [
+        "You are not confused. You are overloaded.",
+        "Somewhere along the way you collected more information than any one appointment could ever cover, and now you need a way to filter it down, not add to it."
+      ]
+    },
+    E: {
+      title: "Something's Shifted, and It's Worth Saying Out Loud",
+      body: [
+        "Something feels different than it did a few months ago, and part of you is wondering if it's worth mentioning.",
+        "It is. Trust what you're noticing, and bring it in before it gets dismissed as nothing."
+      ]
+    }
+  };
+
+  const CTA_URL = "https://healthwithhashimotos.com/hashimotos-decoded-thyroid-immune/";
+
+  let currentQuestion = 0;
+  let answers = [];
+
+  const screenStart = document.getElementById('screen-start');
+  const screenQuiz = document.getElementById('screen-quiz');
+  const screenResult = document.getElementById('screen-result');
+
+  const questionText = document.getElementById('question-text');
+  const optionsList = document.getElementById('options-list');
+  const questionCount = document.getElementById('question-count');
+  const progressFill = document.getElementById('progress-fill');
+  const backBtn = document.getElementById('back-btn');
+
+  document.getElementById('start-btn').addEventListener('click', () => {
+    currentQuestion = 0;
+    answers = [];
+    showScreen(screenQuiz);
+    renderQuestion();
+  });
+
+  document.getElementById('restart-btn').addEventListener('click', () => {
+    currentQuestion = 0;
+    answers = [];
+    showScreen(screenStart);
+  });
+
+  backBtn.addEventListener('click', () => {
+    if (currentQuestion > 0) {
+      currentQuestion -= 1;
+      answers.pop();
+      renderQuestion();
+    }
+  });
+
+  function showScreen(screen) {
+    [screenStart, screenQuiz, screenResult].forEach(s => s.classList.remove('active'));
+    screen.classList.add('active');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  function renderQuestion() {
+    const q = questions[currentQuestion];
+    questionCount.textContent = `Question ${currentQuestion + 1} of ${questions.length}`;
+    progressFill.style.width = `${(currentQuestion / questions.length) * 100}%`;
+    questionText.textContent = q.text;
+    backBtn.style.visibility = currentQuestion === 0 ? 'hidden' : 'visible';
+
+    optionsList.innerHTML = '';
+    q.options.forEach(opt => {
+      const li = document.createElement('li');
+      const btn = document.createElement('button');
+      btn.className = 'option';
+      btn.type = 'button';
+      btn.innerHTML = `<span class="option-dot"></span><span>${opt.text}</span>`;
+      btn.addEventListener('click', () => selectAnswer(opt.cat, btn));
+      li.appendChild(btn);
+      optionsList.appendChild(li);
+    });
+  }
+
+  function selectAnswer(cat, btnEl) {
+    document.querySelectorAll('.option').forEach(b => b.classList.remove('selected'));
+    btnEl.classList.add('selected');
+    answers[currentQuestion] = cat;
+
+    setTimeout(() => {
+      if (currentQuestion < questions.length - 1) {
+        currentQuestion += 1;
+        renderQuestion();
+      } else {
+        progressFill.style.width = '100%';
+        showResult();
+      }
+    }, 350);
+  }
+
+  function showResult() {
+    const scores = { A: 0, B: 0, C: 0, D: 0, E: 0 };
+    answers.forEach(cat => { scores[cat] += 1; });
+
+    const maxScore = Math.max(...Object.values(scores));
+    const topCategories = Object.keys(scores).filter(cat => scores[cat] === maxScore);
+
+    let winner;
+    if (topCategories.length > 1) {
+      winner = answers[0]; // Q1 tie-break rule
+    } else {
+      winner = topCategories[0];
+    }
+
+    const result = results[winner];
+    document.getElementById('result-title').textContent = result.title;
+    document.getElementById('result-body').innerHTML = result.body.map(p => `<p>${p}</p>`).join('');
+    document.getElementById('result-cta').href = CTA_URL;
+
+    showScreen(screenResult);
+  }
+</script>
+
+</body>
+</html>
